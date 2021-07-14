@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SnakesLadders
@@ -7,7 +8,7 @@ namespace SnakesLadders
     public class Game
     {
         private int[] _PlayersScore;
-        private int TotalNumbers;
+        private int _TotalNumbers;
 
         public int? Winner { get; private set; }
 
@@ -19,23 +20,23 @@ namespace SnakesLadders
             }
 
             _PlayersScore = new int[players];
-            TotalNumbers = boardSize * boardSize;  // we assume squared shape
+            _TotalNumbers = boardSize * boardSize;  // we assume squared shape
         }
-
 
 
         public void Move(int player, int steps)
         {
             if(Winner.HasValue)
             {
-              //  throw new Exception("Game has already ended");
+                //  throw new Exception("Game has already ended");
                 return;
             }
 
-            if(_PlayersScore[player] + steps <= TotalNumbers)
+            if(_PlayersScore[player] + steps <= _TotalNumbers)
                 _PlayersScore[player] += steps;
 
-            if(_PlayersScore[player] == TotalNumbers)
+
+            if(_PlayersScore[player] == _TotalNumbers)
                 Winner = player;
         }
 
