@@ -27,6 +27,8 @@ namespace SnakesLadders
             _TotalNumbers = boardSize * boardSize;  // we assume squared shape
         }
 
+        public int GetScoreOfPlayer(int i) => _PlayersScore[i];
+
 
         public void SetLaddersAndSnakes(IEnumerable<Segment> ladders, IEnumerable<Segment> snakes)
         {

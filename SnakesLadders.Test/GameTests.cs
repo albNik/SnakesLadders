@@ -19,7 +19,8 @@ namespace SnakesLadders.Test
 
         [Test]
         public void PlayUntilWin()
-        {            var game = new Game(2, 8); //2 players 64 numbers
+        {
+            var game = new Game(2, 8); //2 players 64 numbers
 
 
             for(int i = 0; i < 10; i++)
@@ -77,9 +78,54 @@ namespace SnakesLadders.Test
 
 
             ladders = new Segment[] { new Segment(50, 10), new Segment(40, 20) };
-             snakes = new Segment[] { new Segment(3, 1), new Segment(7, 6) };
+            snakes = new Segment[] { new Segment(3, 1), new Segment(7, 6) };
             game.SetLaddersAndSnakes(ladders, snakes);
             Assert.Pass();
+        }
+
+
+        [Test]
+        public void PlayGameWithOnlyLadders()
+        {
+            var game = new Game(players: 5, boardSize: 8);
+            var ladders = new Segment[] { new Segment(20, 10), new Segment(50, 30) };
+
+            game.SetLaddersAndSnakes(ladders, new Segment[] { });
+
+            game.Move(0, 5);
+            Assert.AreEqual(5, game.GetScoreOfPlayer(0));
+
+            game.Move(0, 5);
+            Assert.AreEqual(20, game.GetScoreOfPlayer(0));
+
+            game.Move(0, 9);
+            Assert.AreEqual(29, game.GetScoreOfPlayer(0));
+
+            game.Move(0, 1);
+            Assert.AreEqual(50, game.GetScoreOfPlayer(0));
+        }
+
+
+        [Test]
+        public void PlayGameWithLaddersAndSnakes()
+        {
+            var game = new Game(players: 5, boardSize: 8);
+            var ladders = new Segment[] { new Segment(20, 10), new Segment(50, 30) };
+            var snakes = new Segment[] { new Segment(25, 15), new Segment(55, 35) };
+
+            game.SetLaddersAndSnakes(ladders, snakes);
+
+            game.Move(0, 5);
+            Assert.AreEqual(5, game.GetScoreOfPlayer(0));
+
+            game.Move(0, 5);
+            Assert.AreEqual(20, game.GetScoreOfPlayer(0));
+
+            game.Move(0, 5);
+            Assert.AreEqual(15, game.GetScoreOfPlayer(0));
+
+            game.Move(0, 20);
+            Assert.AreEqual(35, game.GetScoreOfPlayer(0));
         }
 
     }
