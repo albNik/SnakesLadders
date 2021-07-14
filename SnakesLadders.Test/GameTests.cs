@@ -17,10 +17,6 @@ namespace SnakesLadders.Test
             new Game(100, 10);
         }
 
-
-
-
-
         [Test]
         public void PlayUntilWin()
         {
@@ -38,20 +34,7 @@ namespace SnakesLadders.Test
             game.Move(1, 64);  //player 0 has already won
             Assert.AreEqual(game.Winner, 0);  
         }
-
-
-        [Test]
-        public void Players()
-        {
-            int players = 3;
-            var game = new Game(players, boardSize: 10);
-
-            for(int i = 0; i < 1000; i++)
-                for(int j = 0; j < players; j++)
-                    game.Move(j, 1);
-
-            Assert.AreEqual(0, game.Winner);
-        }
+      
 
     }
 }
