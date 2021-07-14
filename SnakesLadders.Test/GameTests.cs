@@ -19,8 +19,7 @@ namespace SnakesLadders.Test
 
         [Test]
         public void PlayUntilWin()
-        {
-            var game = new Game( 2, 8); //2 players 64 numbers
+        {            var game = new Game(2, 8); //2 players 64 numbers
 
 
             for(int i = 0; i < 10; i++)
@@ -32,9 +31,56 @@ namespace SnakesLadders.Test
             Assert.AreEqual(game.Winner, 0);
 
             game.Move(1, 64);  //player 0 has already won
-            Assert.AreEqual(game.Winner, 0);  
+            Assert.AreEqual(game.Winner, 0);
         }
-      
+
+
+        [Test]
+        public void ThreePlayersSameMoves()
+        {
+            int players = 3;
+            var game = new Game(players, boardSize: 10);
+
+            for(int i = 0; i < 1000; i++)
+                for(int j = 0; j < players; j++)
+                    game.Move(j, 1);
+
+            Assert.AreEqual(0, game.Winner);
+        }
+
+
+        [Test]
+        public void ValidateSegments()
+        {
+            Assert.Throws<ArgumentException>(() => new Segment(5, 5));
+            Assert.Throws<ArgumentException>(() => new Segment(5, 10));
+
+            new Segment(5, 3);
+            Assert.Pass();
+        }
+
+
+        [Test]
+        public void ValidateConflicts()
+        {
+            var game = new Game(players: 5, boardSize: 10);
+
+            var ladders = new Segment[] { new Segment(5, 1), new Segment(5, 4) };
+            var snakes = new Segment[] { new Segment(3, 1), new Segment(7, 6) };
+            Assert.Throws<DuplicatePointsException>(() => game.SetLaddersAndSnakes(ladders, snakes));
+
+
+            ladders = new Segment[] { new Segment(5000, 10), new Segment(40, 20) };
+            snakes = new Segment[] { new Segment(3, 1), new Segment(7, 6) };
+            Assert.Throws<ArgumentOutOfRangeException>(() => game.SetLaddersAndSnakes(ladders, snakes));
+
+
+
+            ladders = new Segment[] { new Segment(50, 10), new Segment(40, 20) };
+             snakes = new Segment[] { new Segment(3, 1), new Segment(7, 6) };
+            game.SetLaddersAndSnakes(ladders, snakes);
+            Assert.Pass();
+        }
 
     }
 }
