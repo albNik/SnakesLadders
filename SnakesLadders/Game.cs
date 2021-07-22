@@ -9,10 +9,8 @@ namespace SnakesLadders
     {
         private int[] _PlayersScore;
         private int _TotalNumbers;
-
-
-        public List<Segment> Ladders { get; private set; } = new List<Segment>();
-        public List<Segment> Snakes { get; private set; } = new List<Segment>();
+        private List<Segment> _Ladders = new List<Segment>();
+        private List<Segment> _Snakes = new List<Segment>();
 
         public int? Winner { get; private set; }
 
@@ -28,7 +26,6 @@ namespace SnakesLadders
         }
 
         public int GetScoreOfPlayer(int i) => _PlayersScore[i];
-
 
         public void SetLaddersAndSnakes(IEnumerable<Segment> ladders, IEnumerable<Segment> snakes)
         {
@@ -46,14 +43,14 @@ namespace SnakesLadders
                 throw new DuplicatePointsException("Every Ladder and Snake should not meet with any other");
             }
 
-            if(allPoints.Min() < 1 || allPoints.Max() > _TotalNumbers)
+            if(allPoints.Any(x => x < 1) || allPoints.Any(x => x > _TotalNumbers))
             {
                 throw new ArgumentOutOfRangeException($"Bottoms and Tops shoud be between 1 and {_TotalNumbers}");
             }
 
 
-            Ladders = ladders.ToList();
-            Snakes = snakes.ToList();
+            _Ladders = ladders.ToList();
+            _Snakes = snakes.ToList();
         }
 
 
@@ -68,16 +65,15 @@ namespace SnakesLadders
             if(_PlayersScore[player] + steps <= _TotalNumbers)
                 _PlayersScore[player] += steps;
 
-            if(Ladders.Any(x => x.Bottom == _PlayersScore[player]))
+            if(_Ladders.Any(x => x.Bottom == _PlayersScore[player]))
             {
-                _PlayersScore[player] = Ladders.First(x => x.Bottom == _PlayersScore[player]).Top;
+                _PlayersScore[player] = _Ladders.First(x => x.Bottom == _PlayersScore[player]).Top;
             }
 
-            else if(Snakes.Any(x => x.Top == _PlayersScore[player]))
+            else if(_Snakes.Any(x => x.Top == _PlayersScore[player]))
             {
-                _PlayersScore[player] = Snakes.First(x => x.Top == _PlayersScore[player]).Bottom;
+                _PlayersScore[player] = _Snakes.First(x => x.Top == _PlayersScore[player]).Bottom;
             }
-
 
             if(_PlayersScore[player] == _TotalNumbers)
                 Winner = player;
